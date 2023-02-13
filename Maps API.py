@@ -4,28 +4,27 @@ import sys
 import requests
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel
-
-SCREEN_SIZE = [600, 450]
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QMainWindow
 
 
-class Example(QWidget):
+class Example(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('01.ui', self)
-        self.getImage()
+        uic.loadUi('ui.ui', self)
+        self.showButton.clicked.connect(self.getImage)
 
 
     def updateParams(self):
         """ Обновляем параметры отображаемой карты """
         self.params = {
-            "ll": ",".join([self.long_input.text(), self.width_input.text()]),
-            "z": self.scale_input.text(),
+            "ll": ",".join([self.longInput.text(), self.widthInput.text()]),
+            "z": self.scaleInput.text(),
             "l": "map"
         }
 
 
     def getImage(self):
+        self.updateParams()
         api_server = "http://static-maps.yandex.ru/1.x/"
         response = requests.get(api_server, params=self.params)
 
