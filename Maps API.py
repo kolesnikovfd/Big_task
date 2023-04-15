@@ -5,7 +5,7 @@ from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QButtonGroup
 
 
 class ResponsiveVar:
@@ -49,15 +49,22 @@ class Example(QMainWindow):
         self.scaleInput: QLineEdit
         self.scaleUp: QPushButton
         self.scaleDown: QPushButton
+        self.mapStyleMap: QPushButton
+        self.mapStyleSat: QPushButton
+        self.mapStyleMix: QPushButton
+        self.mapStyleGroup: QButtonGroup
         self.map: QLabel
         self.errorLabel: QLabel
 
         self.connectLineEdits()
 
         # Параметры
-        self.z = ResponsiveVar(int, self.scaleInput.text(), self.scaleInput.setText)
-        self.xCord = ResponsiveVar(float, self.xInput.text(), self.xInput.setText)
-        self.yCord = ResponsiveVar(float, self.yInput.text(), self.yInput.setText)
+        self.z = ResponsiveVar(
+            int, self.scaleInput.text(), self.scaleInput.setText)
+        self.xCord = ResponsiveVar(
+            float, self.xInput.text(), self.xInput.setText)
+        self.yCord = ResponsiveVar(
+            float, self.yInput.text(), self.yInput.setText)
         self.updateDelay = 1000  # в мсек
 
         self.updateTimer = QTimer(self)
@@ -70,18 +77,29 @@ class Example(QMainWindow):
         self.xInput.textEdited.connect(self.xCord._set)
         self.yInput.textEdited.connect(self.yCord._set)
         self.scaleInput.textEdited.connect(self.z._set)
-        self.scaleUpBtn.pressed.connect(lambda: (self.scaleUp(), self.updateImage()), Qt.QueuedConnection)
-        self.scaleDownBtn.pressed.connect(lambda: (self.scaleDown(), self.updateImage()), Qt.QueuedConnection)
+        self.scaleUpBtn.pressed.connect(
+            lambda: (self.scaleUp(), self.updateImage()), Qt.QueuedConnection)
+        self.scaleDownBtn.pressed.connect(
+            lambda: (self.scaleDown(), self.updateImage()), Qt.QueuedConnection)
+        self.mapStyleGroup.buttonToggled.connect(
+            self.updateImage, Qt.QueuedConnection)
 
     def get_params(self):
         """ Обновляем параметры отображаемой карты """
         width = min(self.map.width(), 650)
         height = min(self.map.height(), 450)
+        mapStyle = self.mapStyleGroup.checkedButton()
+        if mapStyle is self.mapStyleMap:
+            l = 'map'
+        elif mapStyle is self.mapStyleSat:
+            l = 'sat'
+        elif mapStyle is self.mapStyleMix:
+            l = 'sat,skl'
 
         return {
             "ll": f"{self.xCord.get()},{self.yCord.get()}",
             "z": self.z.get(),
-            "l": "map",
+            "l": l,
             "size": f"{width},{height}"
         }
 
