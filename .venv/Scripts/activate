@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="F:\Y Lyceum\2 курс\32. WEB. Решение задач на API Яндекс.Карт\Big_task\.venv"
+VIRTUAL_ENV="F:\Python Projects\Big_task\.venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

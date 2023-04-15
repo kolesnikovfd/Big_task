@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=F:\Y Lyceum\2 курс\32. WEB. Решение задач на API Яндекс.Карт\Big_task\.venv
+set VIRTUAL_ENV=F:\Python Projects\Big_task\.venv
 
 if not defined PROMPT set PROMPT=$P$G
 
