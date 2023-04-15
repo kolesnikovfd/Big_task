@@ -47,6 +47,7 @@ class Example(QMainWindow):
         self.xInput: QLineEdit
         self.yInput: QLineEdit
         self.searchInput: QLineEdit
+        self.addressInput: QLineEdit
         self.searchBtn: QPushButton
         self.searchClearBtn: QPushButton
         self.scaleInput: QLineEdit
@@ -87,7 +88,6 @@ class Example(QMainWindow):
             lambda: (self.scaleDown(), self.updateImage()), Qt.QueuedConnection)
         self.mapStyleGroup.buttonToggled.connect(
             self.updateImage, Qt.QueuedConnection)
-        self.searchInput.textEdited.connect(self.clear_point)
         self.searchClearBtn.pressed.connect(
             lambda: (self.clear_point(), self.clear_search()))
         self.searchBtn.pressed.connect(self.search)
@@ -150,6 +150,7 @@ class Example(QMainWindow):
 
     def clear_search(self):
         self.searchInput.setText('')
+        self.addressInput.setText('')
         self.updateImage()
 
     def place_point(self):
@@ -176,7 +177,7 @@ class Example(QMainWindow):
             text = f['properties']['CompanyMetaData']['address']
         self.xCord.set(point[0])
         self.yCord.set(point[1])
-        self.searchInput.setText(text)
+        self.addressInput.setText(text)
         self.place_point()
         self.updateImage()
 

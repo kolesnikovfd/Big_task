@@ -29,7 +29,7 @@
    <string>Большая задача</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QLineEdit {
+   <string notr="true">QLineEdit, QLabel {
 background-color: white;
 border: 1px solid #aaaaaa;
 border-radius: 10px
@@ -111,9 +111,9 @@ background-color: #eeeeee;
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,2,2,3">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="6,5,2,2">
      <property name="spacing">
-      <number>4</number>
+      <number>0</number>
      </property>
      <property name="leftMargin">
       <number>4</number>
@@ -128,7 +128,46 @@ background-color: #eeeeee;
       <number>4</number>
      </property>
      <item>
-      <spacer name="horizontalSpacer">
+      <widget class="QLineEdit" name="addressInput">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>IBeamCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">padding: 0 6px;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="placeholderText">
+        <string>Адрес</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_9">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -148,10 +187,19 @@ background-color: #eeeeee;
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <pointsize>10</pointsize>
         </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-top-right-radius: 0;border-bottom-right-radius: 0;</string>
        </property>
        <property name="text">
         <string>37.617698</string>
@@ -169,13 +217,19 @@ background-color: #eeeeee;
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <pointsize>10</pointsize>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true"/>
+        <string notr="true">border-top-left-radius: 0;border-bottom-left-radius: 0;border-left: none;</string>
        </property>
        <property name="text">
         <string>55.755864</string>
@@ -184,19 +238,6 @@ background-color: #eeeeee;
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </widget>
@@ -604,7 +645,7 @@ background-color: white;
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="4,12,0,2,4">
+    <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="12,1,2">
      <property name="spacing">
       <number>0</number>
      </property>
@@ -620,19 +661,6 @@ background-color: white;
      <property name="bottomMargin">
       <number>4</number>
      </property>
-     <item>
-      <spacer name="horizontalSpacer_7">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>108</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
      <item>
       <widget class="QLineEdit" name="searchInput">
        <property name="sizePolicy">
@@ -660,21 +688,21 @@ background-color: white;
      <item>
       <widget class="QPushButton" name="searchClearBtn">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>30</width>
-         <height>30</height>
+         <width>0</width>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>30</width>
-         <height>30</height>
+         <width>16777215</width>
+         <height>16777215</height>
         </size>
        </property>
        <property name="font">
@@ -697,7 +725,7 @@ background-color: white;
      <item>
       <widget class="QPushButton" name="searchBtn">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -730,19 +758,6 @@ background-color: white;
         <iconset theme="Cancel"/>
        </property>
       </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_8">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>108</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </widget>
