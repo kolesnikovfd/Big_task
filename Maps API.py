@@ -9,35 +9,29 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushB
 
 
 class ResponsiveVar:
-    def __init__(self, var, widgetSetFunction):
-        self._var = var
+    def __init__(self, type_, var, widgetSetFunction):
+        self.type = type_
         self.func = widgetSetFunction
+        try:
+            self._var = self.type(var)
+        except:
+            self._var = var
+
+    def _set_var(self, x):
+        try:
+            self._var = self.type(x)
+        except:
+            self._var = x
 
     def set(self, x):
-        self.set_var(x)
+        self._set_var(x)
         self.func(str(self._var))
 
     def _set(self, x):
-        self.set_var(x)
+        self._set_var(x)
 
     def get(self):
         return self._var
-
-
-class ResponsiveInt(ResponsiveVar):
-    def set_var(self, x):
-        try:
-            self._var = int(x)
-        except:
-            self._var = x
-
-
-class ResponsiveFloat(ResponsiveVar):
-    def set_var(self, x):
-        try:
-            self._var = float(x)
-        except:
-            self._var = x
 
 
 def clamp(min_, x, max_):
@@ -47,32 +41,37 @@ def clamp(min_, x, max_):
 class Example(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('ui.ui', self)
+        uic.loadUi('uiNew.ui', self)
 
         # Подсказки классов
         self.xInput: QLineEdit
         self.yInput: QLineEdit
         self.scaleInput: QLineEdit
+        self.scaleUp: QPushButton
+        self.scaleDown: QPushButton
         self.map: QLabel
         self.errorLabel: QLabel
 
         self.connectLineEdits()
 
         # Параметры
-        self.z = ResponsiveInt(7, self.scaleInput.setText)
-        self.xCord = ResponsiveFloat(37.617698, self.xInput.setText)
-        self.yCord = ResponsiveFloat(55.755864, self.yInput.setText)
+        self.z = ResponsiveVar(int, self.scaleInput.text(), self.scaleInput.setText)
+        self.xCord = ResponsiveVar(float, self.xInput.text(), self.xInput.setText)
+        self.yCord = ResponsiveVar(float, self.yInput.text(), self.yInput.setText)
         self.updateDelay = 1000  # в мсек
 
         self.updateTimer = QTimer(self)
         self.updateTimer.setSingleShot(True)
         self.updateTimer.timeout.connect(self.updateImage)
         self.updateImage()
+        self.hide_error()
 
         # Подключение
         self.xInput.textEdited.connect(self.xCord._set)
         self.yInput.textEdited.connect(self.yCord._set)
         self.scaleInput.textEdited.connect(self.z._set)
+        self.scaleUpBtn.pressed.connect(lambda: (self.scaleUp(), self.updateImage()), Qt.QueuedConnection)
+        self.scaleDownBtn.pressed.connect(lambda: (self.scaleDown(), self.updateImage()), Qt.QueuedConnection)
 
     def get_params(self):
         """ Обновляем параметры отображаемой карты """
@@ -110,10 +109,10 @@ class Example(QMainWindow):
         return True
 
     def show_error(self):
-        self.errorLabel.setText('Некорректные параметры')
+        self.errorLabel.setVisible(True)
 
     def hide_error(self):
-        self.errorLabel.setText('')
+        self.errorLabel.setVisible(False)
 
     def connectLineEdits(self):
         for child in self.findChildren(QLineEdit):
@@ -141,13 +140,19 @@ class Example(QMainWindow):
         self.thread = None
         self.worker = None
 
+    def scaleUp(self):
+        self.z.set(clamp(0, self.z.get() + 1, 17))
+
+    def scaleDown(self):
+        self.z.set(clamp(0, self.z.get() - 1, 17))
+
     def keyPressEvent(self, event: QtGui.QKeyEvent):
         update = False
         if event.key() == Qt.Key.Key_PageUp:
-            self.z.set(clamp(0, self.z.get() + 1, 17))
+            self.scaleUp()
             update = True
         if event.key() == Qt.Key.Key_PageDown:
-            self.z.set(clamp(0, self.z.get() - 1, 17))
+            self.scaleDown()
             update = True
         if event.key() == Qt.Key.Key_Right:
             value = self.xCord.get() + 360 / 2 ** self.z.get()
