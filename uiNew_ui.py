@@ -15,6 +15,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(650, 450)
+        MainWindow.setMinimumSize(QtCore.QSize(650, 450))
         MainWindow.setMaximumSize(QtCore.QSize(650, 450))
         MainWindow.setFocusPolicy(QtCore.Qt.StrongFocus)
         MainWindow.setStyleSheet("QLineEdit {\n"
@@ -23,6 +24,14 @@ class Ui_MainWindow(object):
 "border-radius: 10px\n"
 "}\n"
 "QLineEdit:focus {\n"
+"background-color: #efefef;\n"
+"}\n"
+"QPushButton {\n"
+"border: 1px solid #aaaaaa;\n"
+"border-radius: 10px;\n"
+"background-color: white;\n"
+"}\n"
+" QPushButton:pressed {\n"
 "background-color: #eeeeee;\n"
 "}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -39,7 +48,7 @@ class Ui_MainWindow(object):
         self.map.setWordWrap(False)
         self.map.setObjectName("map")
         self.CordsFrame = QtWidgets.QFrame(self.centralwidget)
-        self.CordsFrame.setGeometry(QtCore.QRect(0, 0, 650, 41))
+        self.CordsFrame.setGeometry(QtCore.QRect(0, 29, 650, 34))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -88,14 +97,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setStretch(3, 3)
         self.scaleFrame = QtWidgets.QFrame(self.centralwidget)
         self.scaleFrame.setGeometry(QtCore.QRect(612, 0, 38, 450))
-        self.scaleFrame.setStyleSheet("QPushButton {\n"
-"border: 1px solid #aaaaaa;\n"
-"border-radius: 10px;\n"
-"background-color: white;\n"
-"}\n"
-" QPushButton:pressed {\n"
-"background-color: #eeeeee;\n"
-"}")
+        self.scaleFrame.setStyleSheet("")
         self.scaleFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.scaleFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.scaleFrame.setObjectName("scaleFrame")
@@ -147,7 +149,7 @@ class Ui_MainWindow(object):
         spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem3)
         self.errorFrame = QtWidgets.QFrame(self.centralwidget)
-        self.errorFrame.setGeometry(QtCore.QRect(0, 38, 650, 38))
+        self.errorFrame.setGeometry(QtCore.QRect(0, 375, 650, 38))
         self.errorFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.errorFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.errorFrame.setObjectName("errorFrame")
@@ -248,6 +250,70 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setStretch(2, 2)
         self.horizontalLayout_3.setStretch(3, 2)
         self.horizontalLayout_3.setStretch(4, 3)
+        self.searchFrame = QtWidgets.QFrame(self.centralwidget)
+        self.searchFrame.setGeometry(QtCore.QRect(0, 0, 650, 38))
+        self.searchFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.searchFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.searchFrame.setObjectName("searchFrame")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.searchFrame)
+        self.horizontalLayout_4.setContentsMargins(4, 2, 4, 4)
+        self.horizontalLayout_4.setSpacing(0)
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        spacerItem8 = QtWidgets.QSpacerItem(108, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem8)
+        self.searchInput = QtWidgets.QLineEdit(self.searchFrame)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.searchInput.sizePolicy().hasHeightForWidth())
+        self.searchInput.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.searchInput.setFont(font)
+        self.searchInput.setStyleSheet("padding-left: 6px;border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: 0;")
+        self.searchInput.setText("")
+        self.searchInput.setObjectName("searchInput")
+        self.horizontalLayout_4.addWidget(self.searchInput)
+        self.searchClearBtn = QtWidgets.QPushButton(self.searchFrame)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.searchClearBtn.sizePolicy().hasHeightForWidth())
+        self.searchClearBtn.setSizePolicy(sizePolicy)
+        self.searchClearBtn.setMinimumSize(QtCore.QSize(30, 30))
+        self.searchClearBtn.setMaximumSize(QtCore.QSize(30, 30))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        self.searchClearBtn.setFont(font)
+        self.searchClearBtn.setStyleSheet("border-radius: 0; border-left: none;")
+        icon = QtGui.QIcon.fromTheme("Cancel")
+        self.searchClearBtn.setIcon(icon)
+        self.searchClearBtn.setObjectName("searchClearBtn")
+        self.horizontalLayout_4.addWidget(self.searchClearBtn)
+        self.searchBtn = QtWidgets.QPushButton(self.searchFrame)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.searchBtn.sizePolicy().hasHeightForWidth())
+        self.searchBtn.setSizePolicy(sizePolicy)
+        self.searchBtn.setMinimumSize(QtCore.QSize(0, 0))
+        self.searchBtn.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        self.searchBtn.setFont(font)
+        self.searchBtn.setStyleSheet("border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: 0;")
+        icon = QtGui.QIcon.fromTheme("Cancel")
+        self.searchBtn.setIcon(icon)
+        self.searchBtn.setObjectName("searchBtn")
+        self.horizontalLayout_4.addWidget(self.searchBtn)
+        spacerItem9 = QtWidgets.QSpacerItem(108, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem9)
+        self.horizontalLayout_4.setStretch(0, 4)
+        self.horizontalLayout_4.setStretch(1, 12)
+        self.horizontalLayout_4.setStretch(3, 2)
+        self.horizontalLayout_4.setStretch(4, 4)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -265,3 +331,6 @@ class Ui_MainWindow(object):
         self.mapStyleMap.setText(_translate("MainWindow", "Схема"))
         self.mapStyleSat.setText(_translate("MainWindow", "Спутник"))
         self.mapStyleMix.setText(_translate("MainWindow", "Гибрид"))
+        self.searchInput.setPlaceholderText(_translate("MainWindow", "Поиск"))
+        self.searchClearBtn.setText(_translate("MainWindow", "X"))
+        self.searchBtn.setText(_translate("MainWindow", "Найти"))

@@ -46,6 +46,9 @@ class Example(QMainWindow):
         # Подсказки классов
         self.xInput: QLineEdit
         self.yInput: QLineEdit
+        self.searchInput: QLineEdit
+        self.searchBtn: QPushButton
+        self.searchClearBtn: QPushButton
         self.scaleInput: QLineEdit
         self.scaleUp: QPushButton
         self.scaleDown: QPushButton
@@ -59,6 +62,7 @@ class Example(QMainWindow):
         self.connectLineEdits()
 
         # Параметры
+        self.pt = None
         self.z = ResponsiveVar(
             int, self.scaleInput.text(), self.scaleInput.setText)
         self.xCord = ResponsiveVar(
@@ -83,25 +87,34 @@ class Example(QMainWindow):
             lambda: (self.scaleDown(), self.updateImage()), Qt.QueuedConnection)
         self.mapStyleGroup.buttonToggled.connect(
             self.updateImage, Qt.QueuedConnection)
+        self.searchInput.textEdited.connect(self.clear_point)
+        self.searchClearBtn.pressed.connect(
+            lambda: (self.clear_point(), self.clear_search()))
+        self.searchBtn.pressed.connect(self.search)
+        self.searchInput.returnPressed.connect(self.search)
 
     def get_params(self):
         """ Обновляем параметры отображаемой карты """
         width = min(self.map.width(), 650)
         height = min(self.map.height(), 450)
         mapStyle = self.mapStyleGroup.checkedButton()
-        if mapStyle is self.mapStyleMap:
-            l = 'map'
-        elif mapStyle is self.mapStyleSat:
-            l = 'sat'
-        elif mapStyle is self.mapStyleMix:
-            l = 'sat,skl'
 
-        return {
+        res = {
             "ll": f"{self.xCord.get()},{self.yCord.get()}",
             "z": self.z.get(),
-            "l": l,
             "size": f"{width},{height}"
         }
+
+        if mapStyle is self.mapStyleMap:
+            res["l"] = 'map'
+        elif mapStyle is self.mapStyleSat:
+            res["l"] = 'sat'
+        elif mapStyle is self.mapStyleMix:
+            res["l"] = 'sat,skl'
+        if self.pt:
+            res["pt"] = self.pt
+
+        return res
 
     def validate_params(self):
         validType = all((
@@ -132,11 +145,54 @@ class Example(QMainWindow):
     def hide_error(self):
         self.errorLabel.setVisible(False)
 
+    def clear_point(self):
+        self.pt = None
+
+    def clear_search(self):
+        self.searchInput.setText('')
+        self.updateImage()
+
+    def place_point(self):
+        self.pt = f'{self.xCord.get()},{self.yCord.get()},org'
+
+    def search(self):
+        promt = self.searchInput.text()
+        params = {
+            "apikey": "dda3ddba-c9ea-4ead-9010-f43fbc15c6e3",
+            "text": promt,
+            "ll": f"{self.xCord.get()},{self.yCord.get()}",
+            "lang": "ru_RU",
+            "results": 1
+        }
+        response = requests.get(
+            'https://search-maps.yandex.ru/v1/', params=params)
+        f = response.json()['features'][0]
+        # with open('a.json', 'w', encoding='utf-8') as file:
+        #     json.dump(response.json(), file, ensure_ascii=False)
+        point = f['geometry']['coordinates']
+        if 'GeocoderMetaData' in f['properties']:
+            text = f['properties']['GeocoderMetaData']['text']
+        elif 'CompanyMetaData' in f['properties']:
+            text = f['properties']['CompanyMetaData']['address']
+        self.xCord.set(point[0])
+        self.yCord.set(point[1])
+        self.searchInput.setText(text)
+        self.place_point()
+        self.updateImage()
+
     def connectLineEdits(self):
-        for child in self.findChildren(QLineEdit):
-            child.textEdited.connect(self.validate_params, Qt.QueuedConnection)
-            child.textEdited.connect(
-                lambda: self.updateTimer.start(self.updateDelay), Qt.QueuedConnection)
+        self.xInput.textEdited.connect(
+            self.validate_params, Qt.QueuedConnection)
+        self.yInput.textEdited.connect(
+            self.validate_params, Qt.QueuedConnection)
+        self.scaleInput.textEdited.connect(
+            self.validate_params, Qt.QueuedConnection)
+        self.xInput.textEdited.connect(
+            lambda: self.updateTimer.start(self.updateDelay), Qt.QueuedConnection)
+        self.yInput.textEdited.connect(
+            lambda: self.updateTimer.start(self.updateDelay), Qt.QueuedConnection)
+        self.scaleInput.textEdited.connect(
+            lambda: self.updateTimer.start(self.updateDelay), Qt.QueuedConnection)
 
     def updateImage(self):
         if not self.validate_params():

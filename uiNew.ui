@@ -10,6 +10,12 @@
     <height>450</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>650</width>
+    <height>450</height>
+   </size>
+  </property>
   <property name="maximumSize">
    <size>
     <width>650</width>
@@ -29,6 +35,14 @@ border: 1px solid #aaaaaa;
 border-radius: 10px
 }
 QLineEdit:focus {
+background-color: #efefef;
+}
+QPushButton {
+border: 1px solid #aaaaaa;
+border-radius: 10px;
+background-color: white;
+}
+ QPushButton:pressed {
 background-color: #eeeeee;
 }</string>
   </property>
@@ -77,9 +91,9 @@ background-color: #eeeeee;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>29</y>
       <width>650</width>
-      <height>41</height>
+      <height>34</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -196,14 +210,7 @@ background-color: #eeeeee;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton {
-border: 1px solid #aaaaaa;
-border-radius: 10px;
-background-color: white;
-}
- QPushButton:pressed {
-background-color: #eeeeee;
-}</string>
+     <string notr="true"/>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -336,7 +343,7 @@ background-color: #eeeeee;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>38</y>
+      <y>375</y>
       <width>650</width>
       <height>38</height>
      </rect>
@@ -575,6 +582,163 @@ background-color: white;
        <property name="sizeHint" stdset="0">
         <size>
          <width>157</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QFrame" name="searchFrame">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>650</width>
+      <height>38</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="4,12,0,2,4">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>4</number>
+     </property>
+     <property name="topMargin">
+      <number>2</number>
+     </property>
+     <property name="rightMargin">
+      <number>4</number>
+     </property>
+     <property name="bottomMargin">
+      <number>4</number>
+     </property>
+     <item>
+      <spacer name="horizontalSpacer_7">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>108</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="searchInput">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">padding-left: 6px;border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: 0;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Поиск</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="searchClearBtn">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-radius: 0; border-left: none;</string>
+       </property>
+       <property name="text">
+        <string>X</string>
+       </property>
+       <property name="icon">
+        <iconset theme="Cancel"/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="searchBtn">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: 0;</string>
+       </property>
+       <property name="text">
+        <string>Найти</string>
+       </property>
+       <property name="icon">
+        <iconset theme="Cancel"/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_8">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>108</width>
          <height>20</height>
         </size>
        </property>
