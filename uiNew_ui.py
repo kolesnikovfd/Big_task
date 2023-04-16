@@ -14,11 +14,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(650, 450)
-        MainWindow.setMinimumSize(QtCore.QSize(650, 450))
-        MainWindow.setMaximumSize(QtCore.QSize(650, 450))
+        MainWindow.resize(650, 470)
+        MainWindow.setMinimumSize(QtCore.QSize(650, 470))
+        MainWindow.setMaximumSize(QtCore.QSize(650, 470))
         MainWindow.setFocusPolicy(QtCore.Qt.StrongFocus)
-        MainWindow.setStyleSheet("QLineEdit, QLabel {\n"
+        MainWindow.setStyleSheet("QLineEdit, QLabe, QCheckBox {\n"
 "background-color: white;\n"
 "border: 1px solid #aaaaaa;\n"
 "border-radius: 10px\n"
@@ -328,6 +328,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setStretch(1, 1)
         self.horizontalLayout_4.setStretch(2, 2)
         MainWindow.setCentralWidget(self.centralwidget)
+        self.menuBar = QtWidgets.QMenuBar(MainWindow)
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 650, 21))
+        self.menuBar.setObjectName("menuBar")
+        self.menu = QtWidgets.QMenu(self.menuBar)
+        self.menu.setObjectName("menu")
+        MainWindow.setMenuBar(self.menuBar)
+        self.showCode = QtWidgets.QAction(MainWindow)
+        self.showCode.setCheckable(True)
+        self.showCode.setShortcutVisibleInContextMenu(False)
+        self.showCode.setObjectName("showCode")
+        self.menu.addAction(self.showCode)
+        self.menuBar.addAction(self.menu.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -348,3 +360,6 @@ class Ui_MainWindow(object):
         self.searchInput.setPlaceholderText(_translate("MainWindow", "Поиск"))
         self.searchClearBtn.setText(_translate("MainWindow", "X"))
         self.searchBtn.setText(_translate("MainWindow", "Найти"))
+        self.menu.setTitle(_translate("MainWindow", "Параметры"))
+        self.showCode.setText(_translate("MainWindow", "Добавлять почтовый индекс к адресу"))
+        self.showCode.setToolTip(_translate("MainWindow", "Добавлять почтовый индекс к адресу"))

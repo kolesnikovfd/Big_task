@@ -1,11 +1,12 @@
 import sys
+import json
 import requests
 from requests.models import Response
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QButtonGroup
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QButtonGroup, QCheckBox, QFrame, QAction
 
 
 class ResponsiveVar:
@@ -38,12 +39,25 @@ def clamp(min_, x, max_):
     return min(max_, max(x, min_))
 
 
+def get_postal_code(point):
+    response = requests.get(
+        f"http://geocode-maps.yandex.ru/1.x/?apikey=40d1649f-0493-4b70-98ba-98533de7710b&geocode={point[0]},{point[1]}&format=json&results=1"
+    )
+    geoobject = response.json(
+    )['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']
+    address = geoobject['metaDataProperty']['GeocoderMetaData']['Address']
+    if 'postal_code' in address:
+        return address['postal_code']
+    return '(Почтовый адрес не найден)'
+
+
 class Example(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('uiNew.ui', self)
 
         # Подсказки классов
+        self.codeFrame: QFrame
         self.xInput: QLineEdit
         self.yInput: QLineEdit
         self.searchInput: QLineEdit
@@ -51,19 +65,24 @@ class Example(QMainWindow):
         self.searchBtn: QPushButton
         self.searchClearBtn: QPushButton
         self.scaleInput: QLineEdit
-        self.scaleUp: QPushButton
-        self.scaleDown: QPushButton
+        self.scaleUpBtn: QPushButton
+        self.scaleDownBtn: QPushButton
         self.mapStyleMap: QPushButton
         self.mapStyleSat: QPushButton
         self.mapStyleMix: QPushButton
         self.mapStyleGroup: QButtonGroup
+        self.showCode: QCheckBox
+        self.codeInput: QLineEdit
         self.map: QLabel
         self.errorLabel: QLabel
+        self.showCode: QAction
 
         self.connectLineEdits()
 
         # Параметры
         self.pt = None
+        self.address = None
+        self.code = None
         self.z = ResponsiveVar(
             int, self.scaleInput.text(), self.scaleInput.setText)
         self.xCord = ResponsiveVar(
@@ -82,9 +101,9 @@ class Example(QMainWindow):
         self.xInput.textEdited.connect(self.xCord._set)
         self.yInput.textEdited.connect(self.yCord._set)
         self.scaleInput.textEdited.connect(self.z._set)
-        self.scaleUpBtn.pressed.connect(
+        self.scaleUpBtn.clicked.connect(
             lambda: (self.scaleUp(), self.updateImage()), Qt.QueuedConnection)
-        self.scaleDownBtn.pressed.connect(
+        self.scaleDownBtn.clicked.connect(
             lambda: (self.scaleDown(), self.updateImage()), Qt.QueuedConnection)
         self.mapStyleGroup.buttonToggled.connect(
             self.updateImage, Qt.QueuedConnection)
@@ -92,6 +111,7 @@ class Example(QMainWindow):
             lambda: (self.clear_point(), self.clear_search()))
         self.searchBtn.pressed.connect(self.search)
         self.searchInput.returnPressed.connect(self.search)
+        self.showCode.triggered.connect(self.show_address)
 
     def get_params(self):
         """ Обновляем параметры отображаемой карты """
@@ -139,6 +159,14 @@ class Example(QMainWindow):
         self.hide_error()
         return True
 
+    def show_address(self):
+        if not self.addressInput.text:
+            return
+        if self.showCode.isChecked():
+            self.addressInput.setText(self.address + " | " + self.code)
+        else:
+            self.addressInput.setText(self.address)
+
     def show_error(self):
         self.errorLabel.setVisible(True)
 
@@ -158,6 +186,8 @@ class Example(QMainWindow):
 
     def search(self):
         promt = self.searchInput.text()
+        if not promt:
+            return
         params = {
             "apikey": "dda3ddba-c9ea-4ead-9010-f43fbc15c6e3",
             "text": promt,
@@ -175,9 +205,11 @@ class Example(QMainWindow):
             text = f['properties']['GeocoderMetaData']['text']
         elif 'CompanyMetaData' in f['properties']:
             text = f['properties']['CompanyMetaData']['address']
+        self.address = text
+        self.code = get_postal_code(point)
+        self.show_address()
         self.xCord.set(point[0])
         self.yCord.set(point[1])
-        self.addressInput.setText(text)
         self.place_point()
         self.updateImage()
 

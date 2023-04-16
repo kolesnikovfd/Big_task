@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>650</width>
-    <height>450</height>
+    <height>470</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>650</width>
-    <height>450</height>
+    <height>470</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>650</width>
-    <height>450</height>
+    <height>470</height>
    </size>
   </property>
   <property name="focusPolicy">
@@ -29,7 +29,7 @@
    <string>Большая задача</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QLineEdit, QLabel {
+   <string notr="true">QLineEdit, QLabe, QCheckBox {
 background-color: white;
 border: 1px solid #aaaaaa;
 border-radius: 10px
@@ -762,6 +762,37 @@ background-color: white;
     </layout>
    </widget>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>650</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Параметры</string>
+    </property>
+    <addaction name="showCode"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <action name="showCode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Добавлять почтовый индекс к адресу</string>
+   </property>
+   <property name="toolTip">
+    <string>Добавлять почтовый индекс к адресу</string>
+   </property>
+   <property name="shortcutVisibleInContextMenu">
+    <bool>false</bool>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
